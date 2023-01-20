@@ -26,6 +26,22 @@ const client = new MongoClient(process.env.MONGO_URI, { useNewUrlParser: true, u
 
 
 async function run() {
+    const usersCollection = client.db('friend-book').collection('users');
+
+
+    app.post('/users', async (req, res) => {
+        const user = req.body;
+        const result = await usersCollection.insertOne(user);
+        console.log(result);
+        res.send(result);
+    });
+
+    app.get('/users', async (req, res) => {
+        const query = {};
+        const users = await usersCollection.find(query).toArray();
+        res.send(users);
+    });
+
 
 }
 
